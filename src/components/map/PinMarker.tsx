@@ -4,29 +4,31 @@ import { Marker, Tooltip, Popup } from "react-leaflet";
 import L from "leaflet";
 import { PinData } from "@/types/pin";
 import VoteButtons from "@/components/voting/VoteButtons";
+import { getCategoryIconUrl } from "@/lib/icon-map";
 
 interface PinMarkerProps {
   pin: PinData;
 }
 
-function createPinIcon(color: string, voteScore: number) {
+function createPinIcon(categorySlug: string, voteScore: number) {
   const opacity = voteScore < 0 ? 0.5 : 1;
+  const iconUrl = getCategoryIconUrl(categorySlug);
   return L.divIcon({
     className: "pin-marker",
-    html: `<div class="pin-icon" style="background:${color};opacity:${opacity}"></div>`,
-    iconSize: [28, 28],
-    iconAnchor: [14, 14],
-    popupAnchor: [0, -16],
+    html: `<div class="pin-icon-img" style="opacity:${opacity}"><img src="${iconUrl}" alt="" width="32" height="32" /></div>`,
+    iconSize: [32, 32],
+    iconAnchor: [16, 16],
+    popupAnchor: [0, -18],
   });
 }
 
 export default function PinMarker({ pin }: PinMarkerProps) {
-  const icon = createPinIcon(pin.category.color, pin.voteScore);
+  const icon = createPinIcon(pin.category.slug, pin.voteScore);
   const position: L.LatLngExpression = [pin.y, pin.x];
 
   return (
     <Marker position={position} icon={icon}>
-      <Tooltip direction="top" offset={[0, -16]}>
+      <Tooltip direction="top" offset={[0, -18]}>
         <div className="text-center">
           <div className="font-medium">{pin.category.name}</div>
           {pin.note && (
@@ -41,9 +43,10 @@ export default function PinMarker({ pin }: PinMarkerProps) {
       <Popup>
         <div className="min-w-[200px]">
           <div className="mb-2 flex items-center gap-2">
-            <span
-              className="inline-block h-3 w-3 rounded-full"
-              style={{ backgroundColor: pin.category.color }}
+            <img
+              src={getCategoryIconUrl(pin.category.slug)}
+              alt={pin.category.name}
+              className="h-5 w-5"
             />
             <span className="font-semibold text-gray-100">
               {pin.category.name}

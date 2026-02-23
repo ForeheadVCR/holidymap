@@ -78,7 +78,7 @@ function MapPageInner() {
 
   return (
     <div className="flex h-screen flex-col">
-      <Header activeRegion={activeRegion} onRegionChange={handleRegionChange} />
+      <Header />
       <div className="flex flex-1 overflow-hidden">
         <Sidebar
           categories={categories || []}

@@ -21,13 +21,13 @@ export const MAP_BOUNDS: [[number, number], [number, number]] = [
 /**
  * Convert pixel coordinates to grid cell label.
  * In Leaflet CRS.Simple: y=0 is bottom of image, y=MAP_HEIGHT is top.
- * Row A is the top (highest y), Row I is the bottom (lowest y).
+ * Row A is the bottom (lowest y), Row I is the top (highest y).
  * Col 1 is the left (lowest x), Col 9 is the right (highest x).
  */
 export function pixelToGridCell(x: number, y: number): string {
   const col = Math.min(Math.max(Math.floor(x / CELL_WIDTH), 0), GRID_COLS - 1);
   const row = Math.min(
-    Math.max(Math.floor((MAP_HEIGHT - y) / CELL_HEIGHT), 0),
+    Math.max(Math.floor(y / CELL_HEIGHT), 0),
     GRID_ROWS - 1
   );
   return `${ROW_LABELS_DISPLAY[row]}${COL_LABELS[col]}`;
@@ -44,6 +44,6 @@ export function gridCellToPixel(cell: string): { x: number; y: number } {
   if (row === -1 || col === -1) return { x: MAP_WIDTH / 2, y: MAP_HEIGHT / 2 };
   return {
     x: col * CELL_WIDTH + CELL_WIDTH / 2,
-    y: MAP_HEIGHT - (row * CELL_HEIGHT + CELL_HEIGHT / 2),
+    y: row * CELL_HEIGHT + CELL_HEIGHT / 2,
   };
 }

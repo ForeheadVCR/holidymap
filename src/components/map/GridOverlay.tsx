@@ -61,7 +61,7 @@ export default function GridOverlay() {
     // Add cell labels
     for (let row = 0; row < GRID_ROWS; row++) {
       for (let col = 0; col < GRID_COLS; col++) {
-        const label = `${ROW_LABELS_DISPLAY[row]}${COL_LABELS[col]}`;
+        const label = `${ROW_LABELS_DISPLAY[GRID_ROWS - 1 - row]}${COL_LABELS[col]}`;
         const x = col * CELL_WIDTH + 8;
         const y = row * CELL_HEIGHT + 18;
 

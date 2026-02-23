@@ -69,28 +69,25 @@ body {
   border: none !important;
 }
 
-.pin-icon {
-  width: 28px;
-  height: 28px;
-  border-radius: 50%;
+.pin-icon-img {
+  width: 32px;
+  height: 32px;
   display: flex;
   align-items: center;
   justify-content: center;
-  border: 2px solid rgba(255, 255, 255, 0.3);
-  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
-  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  transition: transform 0.15s ease;
   cursor: pointer;
+  filter: drop-shadow(0 2px 4px rgba(0, 0, 0, 0.6));
 }
 
-.pin-icon:hover {
-  transform: scale(1.2);
-  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+.pin-icon-img:hover {
+  transform: scale(1.3);
 }
 
-.pin-icon img {
-  width: 16px;
-  height: 16px;
-  filter: brightness(0) invert(1);
+.pin-icon-img img {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
 }
 
 /* Grid label styles */

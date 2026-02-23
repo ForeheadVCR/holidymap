@@ -4,6 +4,7 @@ import { useState } from "react";
 import { ChevronDown, ChevronRight, Minus } from "lucide-react";
 import { cn } from "@/lib/utils";
 import { CategoryData } from "@/types/pin";
+import { getCategoryIconUrl } from "@/lib/icon-map";
 
 interface CategoryFilterProps {
   group: string;
@@ -82,11 +83,10 @@ export default function CategoryFilter({
                     : "text-gray-500 hover:bg-dune-dark-800 hover:text-gray-400"
                 )}
               >
-                <span
-                  className="h-3 w-3 flex-shrink-0 rounded-full"
-                  style={{
-                    backgroundColor: enabled ? cat.color : `${cat.color}44`,
-                  }}
+                <img
+                  src={getCategoryIconUrl(cat.slug)}
+                  alt=""
+                  className={cn("h-5 w-5 flex-shrink-0", !enabled && "opacity-30")}
                 />
                 <span className={cn(!enabled && "line-through decoration-gray-600")}>
                   {cat.name}

@@ -27,6 +27,9 @@
     "swr": "^2.4.0",
     "tailwind-merge": "^3.5.0"
   },
+  "prisma": {
+    "seed": "tsx prisma/seed.ts"
+  },
   "devDependencies": {
     "@tailwindcss/postcss": "^4",
     "@types/leaflet": "^1.9.21",
