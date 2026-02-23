@@ -1,0 +1,123 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Account {
+  id                String  @id @default(cuid())
+  userId            String
+  type              String
+  provider          String
+  providerAccountId String
+  refresh_token     String? @db.Text
+  access_token      String? @db.Text
+  expires_at        Int?
+  token_type        String?
+  scope             String?
+  id_token          String? @db.Text
+  session_state     String?
+
+  user User @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([provider, providerAccountId])
+  @@index([userId])
+}
+
+model Session {
+  id           String   @id @default(cuid())
+  sessionToken String   @unique
+  userId       String
+  expires      DateTime
+  user         User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@index([userId])
+}
+
+model User {
+  id            String    @id @default(cuid())
+  name          String?
+  email         String?   @unique
+  emailVerified DateTime?
+  image         String?
+  discordId     String?   @unique
+  accounts      Account[]
+  sessions      Session[]
+  pins          Pin[]
+  votes         Vote[]
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model VerificationToken {
+  identifier String
+  token      String   @unique
+  expires    DateTime
+
+  @@unique([identifier, token])
+}
+
+model Category {
+  id        String @id @default(cuid())
+  name      String @unique
+  group     String
+  slug      String @unique
+  iconPath  String
+  color     String @default("#f97316")
+  sortOrder Int    @default(0)
+  pins      Pin[]
+
+  @@index([group])
+}
+
+model Region {
+  id            String    @id @default(cuid())
+  name          String    @unique
+  slug          String    @unique
+  rotationStart DateTime?
+  rotationEnd   DateTime?
+  pins          Pin[]
+}
+
+model Pin {
+  id         String   @id @default(cuid())
+  x          Float
+  y          Float
+  gridCell   String
+  note       String?  @db.Text
+  categoryId String
+  category   Category @relation(fields: [categoryId], references: [id])
+  regionId   String
+  region     Region   @relation(fields: [regionId], references: [id])
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  votes      Vote[]
+  voteScore  Int      @default(0)
+  hidden     Boolean  @default(false)
+  createdAt  DateTime @default(now())
+  updatedAt  DateTime @updatedAt
+
+  @@index([regionId])
+  @@index([categoryId])
+  @@index([gridCell])
+  @@index([voteScore])
+  @@index([userId])
+  @@index([regionId, hidden])
+}
+
+model Vote {
+  id        String   @id @default(cuid())
+  value     Int
+  pinId     String
+  pin       Pin      @relation(fields: [pinId], references: [id], onDelete: Cascade)
+  userId    String
+  user      User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  createdAt DateTime @default(now())
+
+  @@unique([pinId, userId])
+  @@index([pinId])
+  @@index([userId])
+}

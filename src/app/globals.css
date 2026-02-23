@@ -1,0 +1,165 @@
+@import "tailwindcss";
+
+@theme inline {
+  --color-dune-dark-950: #0d0d10;
+  --color-dune-dark-900: #1a1a1f;
+  --color-dune-dark-800: #26262e;
+  --color-dune-dark-700: #4c4c58;
+  --color-dune-dark-600: #6b6b7a;
+  --color-dune-dark-500: #8b8b9a;
+  --color-dune-sand-100: #fef3c7;
+  --color-dune-sand-200: #fde68a;
+  --color-dune-sand-300: #fcd34d;
+  --color-dune-sand-400: #fbbf24;
+  --color-dune-sand-500: #f59e0b;
+  --color-dune-spice-400: #fb923c;
+  --color-dune-spice-500: #f97316;
+  --color-dune-spice-600: #ea580c;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-display: "Cinzel", serif;
+  --font-mono: "JetBrains Mono", "Consolas", monospace;
+}
+
+body {
+  background: var(--color-dune-dark-950);
+  color: #f3f4f6;
+  font-family: var(--font-sans);
+}
+
+/* Leaflet overrides for dark theme */
+.leaflet-container {
+  background: #1a1510 !important;
+  font-family: var(--font-sans) !important;
+}
+
+.leaflet-control-zoom a {
+  background-color: var(--color-dune-dark-900) !important;
+  color: #f3f4f6 !important;
+  border-color: var(--color-dune-dark-700) !important;
+}
+
+.leaflet-control-zoom a:hover {
+  background-color: var(--color-dune-dark-800) !important;
+}
+
+.leaflet-popup-content-wrapper {
+  background: var(--color-dune-dark-900) !important;
+  color: #f3f4f6 !important;
+  border: 1px solid var(--color-dune-dark-700) !important;
+  border-radius: 8px !important;
+  box-shadow: 0 4px 20px rgba(0, 0, 0, 0.5) !important;
+}
+
+.leaflet-popup-tip {
+  background: var(--color-dune-dark-900) !important;
+  border: 1px solid var(--color-dune-dark-700) !important;
+}
+
+.leaflet-popup-close-button {
+  color: #9ca3af !important;
+}
+
+.leaflet-popup-close-button:hover {
+  color: #f3f4f6 !important;
+}
+
+/* Pin marker styles */
+.pin-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.pin-icon {
+  width: 28px;
+  height: 28px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 2px solid rgba(255, 255, 255, 0.3);
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.4);
+  transition: transform 0.15s ease, box-shadow 0.15s ease;
+  cursor: pointer;
+}
+
+.pin-icon:hover {
+  transform: scale(1.2);
+  box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+}
+
+.pin-icon img {
+  width: 16px;
+  height: 16px;
+  filter: brightness(0) invert(1);
+}
+
+/* Grid label styles */
+.grid-label {
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 12px;
+  font-family: var(--font-mono);
+  font-weight: 600;
+  pointer-events: none;
+  user-select: none;
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 6px;
+}
+
+::-webkit-scrollbar-track {
+  background: var(--color-dune-dark-950);
+}
+
+::-webkit-scrollbar-thumb {
+  background: var(--color-dune-dark-700);
+  border-radius: 3px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: var(--color-dune-dark-600);
+}
+
+/* Pin placement animation */
+@keyframes pin-appear {
+  from {
+    transform: scale(0) translateY(-10px);
+    opacity: 0;
+  }
+  to {
+    transform: scale(1) translateY(0);
+    opacity: 1;
+  }
+}
+
+.pin-new .pin-icon {
+  animation: pin-appear 0.3s ease-out;
+}
+
+/* Tooltip styles */
+.leaflet-tooltip {
+  background: var(--color-dune-dark-900) !important;
+  color: #f3f4f6 !important;
+  border: 1px solid var(--color-dune-dark-700) !important;
+  border-radius: 6px !important;
+  padding: 6px 10px !important;
+  font-size: 13px !important;
+  box-shadow: 0 2px 12px rgba(0, 0, 0, 0.4) !important;
+}
+
+.leaflet-tooltip-top::before {
+  border-top-color: var(--color-dune-dark-700) !important;
+}
+
+.leaflet-tooltip-bottom::before {
+  border-bottom-color: var(--color-dune-dark-700) !important;
+}
+
+.leaflet-tooltip-left::before {
+  border-left-color: var(--color-dune-dark-700) !important;
+}
+
+.leaflet-tooltip-right::before {
+  border-right-color: var(--color-dune-dark-700) !important;
+}
