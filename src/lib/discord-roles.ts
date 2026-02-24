@@ -6,6 +6,7 @@
 const DISCORD_BOT_TOKEN = process.env.DISCORD_BOT_TOKEN || "";
 const DISCORD_GUILD_ID = process.env.DISCORD_GUILD_ID || "";
 const DISCORD_EDITOR_ROLE_ID = process.env.DISCORD_EDITOR_ROLE_ID || "";
+const DISCORD_MOD_ROLE_ID = process.env.DISCORD_MOD_ROLE_ID || "";
 const DISCORD_ADMIN_ROLE_ID = process.env.DISCORD_ADMIN_ROLE_ID || "";
 
 const CACHE_TTL_MS = 5 * 60 * 1000; // 5 minutes
@@ -71,6 +72,7 @@ async function getCachedRoles(discordUserId: string): Promise<string[]> {
 export interface UserPermissions {
   canEdit: boolean;
   isAdmin: boolean;
+  voteWeight: number;
 }
 
 /**
@@ -82,19 +84,28 @@ export async function getUserPermissions(
   discordId: string | null | undefined
 ): Promise<UserPermissions> {
   if (!discordId) {
-    return { canEdit: false, isAdmin: false };
+    return { canEdit: false, isAdmin: false, voteWeight: 1 };
   }
 
   const roles = await getCachedRoles(discordId);
   const hasEditorRole = DISCORD_EDITOR_ROLE_ID
     ? roles.includes(DISCORD_EDITOR_ROLE_ID)
     : false;
+  const hasModRole = DISCORD_MOD_ROLE_ID
+    ? roles.includes(DISCORD_MOD_ROLE_ID)
+    : false;
   const hasAdminRole = DISCORD_ADMIN_ROLE_ID
     ? roles.includes(DISCORD_ADMIN_ROLE_ID)
     : false;
 
+  // Vote weight: highest role wins (Admin=10, Mod=5, Editor=1)
+  let voteWeight = 1;
+  if (hasAdminRole) voteWeight = 10;
+  else if (hasModRole) voteWeight = 5;
+
   return {
-    canEdit: hasEditorRole || hasAdminRole,
+    canEdit: hasEditorRole || hasModRole || hasAdminRole,
     isAdmin: hasAdminRole,
+    voteWeight,
   };
 }

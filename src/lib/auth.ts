@@ -29,6 +29,7 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         const permissions = await getUserPermissions(discordId);
         session.user.canEdit = permissions.canEdit;
         session.user.isAdmin = permissions.isAdmin;
+        session.user.voteWeight = permissions.voteWeight;
       }
       return session;
     },

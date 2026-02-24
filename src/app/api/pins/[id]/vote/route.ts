@@ -54,17 +54,21 @@ export async function POST(
     );
   }
 
+  // Apply vote weight based on Discord role (Admin=10, Mod=5, Editor=1)
+  const weight = session.user.voteWeight ?? 1;
+  const weightedValue = value * weight;
+
   // Upsert vote and recalculate score in a transaction
   const result = await prisma.$transaction(async (tx) => {
     await tx.vote.upsert({
       where: {
         pinId_userId: { pinId, userId: session.user.id },
       },
-      update: { value },
+      update: { value: weightedValue },
       create: {
         pinId,
         userId: session.user.id,
-        value,
+        value: weightedValue,
       },
     });
 
