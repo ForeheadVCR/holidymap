@@ -9,8 +9,9 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 import "leaflet/dist/leaflet.css";
-import { useSession } from "next-auth/react";
+import { signIn, useSession } from "next-auth/react";
 import { PinData } from "@/types/pin";
+import Toast from "@/components/ui/Toast";
 import {
   MAP_BOUNDS,
   MAP_WIDTH,
@@ -78,10 +79,27 @@ export default function InteractiveMap({
     y: number;
     gridCell: string;
   } | null>(null);
+  const [toast, setToast] = useState<{
+    message: string;
+    showSignIn?: boolean;
+  } | null>(null);
 
   const handleMapClick = useCallback(
     (latlng: L.LatLng) => {
-      if (!session?.user?.canEdit) return;
+      if (!session) {
+        setToast({
+          message: "You must sign in with Discord to add locations",
+          showSignIn: true,
+        });
+        return;
+      }
+
+      if (!session.user?.canEdit) {
+        setToast({
+          message: "You need the Watersealed role to add locations",
+        });
+        return;
+      }
 
       const x = latlng.lng;
       const y = latlng.lat;
@@ -141,6 +159,21 @@ export default function InteractiveMap({
           activeRegion={activeRegion}
           onClose={() => setPlacementCoords(null)}
           onPlaced={handlePinPlaced}
+        />
+      )}
+
+      {toast && (
+        <Toast
+          message={toast.message}
+          action={
+            toast.showSignIn
+              ? {
+                  label: "Sign in with Discord",
+                  onClick: () => signIn("discord"),
+                }
+              : undefined
+          }
+          onDismiss={() => setToast(null)}
         />
       )}
     </>
