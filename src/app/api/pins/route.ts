@@ -3,6 +3,7 @@ import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { rateLimit } from "@/lib/rate-limit";
 import { pixelToGridCell } from "@/lib/map-config";
+import { logActivity } from "@/lib/activity-log";
 
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
@@ -185,6 +186,13 @@ export async function POST(request: NextRequest) {
       },
     },
   });
+
+  logActivity("pin_created", session.user.id, {
+    pinId: pin.id,
+    category: category.name,
+    gridCell,
+    note: pin.note,
+  }, region.id);
 
   return NextResponse.json({
     ...pin,

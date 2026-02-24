@@ -2,6 +2,7 @@ import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
 import { rateLimit } from "@/lib/rate-limit";
+import { logActivity } from "@/lib/activity-log";
 
 const HIDE_THRESHOLD = -5;
 const MAX_SCORE = 10;
@@ -41,7 +42,10 @@ export async function POST(
     );
   }
 
-  const pin = await prisma.pin.findUnique({ where: { id: pinId } });
+  const pin = await prisma.pin.findUnique({
+    where: { id: pinId },
+    include: { category: { select: { name: true } } },
+  });
   if (!pin) {
     return NextResponse.json({ error: "Pin not found" }, { status: 404 });
   }
@@ -89,6 +93,13 @@ export async function POST(
     return updated;
   });
 
+  logActivity("vote_cast", session.user.id, {
+    pinId,
+    category: pin.category.name,
+    gridCell: pin.gridCell,
+    value: weightedValue,
+  }, pin.regionId);
+
   return NextResponse.json({
     voteScore: result.voteScore,
     hidden: result.hidden,
@@ -112,6 +123,11 @@ export async function DELETE(
   }
 
   const { id: pinId } = await params;
+
+  const votePin = await prisma.pin.findUnique({
+    where: { id: pinId },
+    include: { category: { select: { name: true } } },
+  });
 
   const vote = await prisma.vote.findUnique({
     where: {
@@ -144,6 +160,14 @@ export async function DELETE(
 
     return updated;
   });
+
+  if (votePin) {
+    logActivity("vote_removed", session.user.id, {
+      pinId,
+      category: votePin.category.name,
+      gridCell: votePin.gridCell,
+    }, votePin.regionId);
+  }
 
   return NextResponse.json({
     voteScore: result.voteScore,

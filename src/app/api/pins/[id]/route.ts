@@ -1,6 +1,7 @@
 import { NextRequest, NextResponse } from "next/server";
 import { prisma } from "@/lib/prisma";
 import { auth } from "@/lib/auth";
+import { logActivity } from "@/lib/activity-log";
 
 export async function PATCH(
   request: NextRequest,
@@ -27,7 +28,15 @@ export async function PATCH(
   const updated = await prisma.pin.update({
     where: { id },
     data: { note: note?.trim() || null },
+    include: { category: { select: { name: true } } },
   });
+
+  logActivity("pin_edited", session.user.id, {
+    pinId: id,
+    category: updated.category.name,
+    gridCell: pin.gridCell,
+    note: updated.note,
+  }, pin.regionId);
 
   return NextResponse.json(updated);
 }
@@ -55,6 +64,19 @@ export async function DELETE(
     return NextResponse.json({ error: "Not authorized" }, { status: 403 });
   }
 
+  // Look up category name before deleting
+  const pinWithCategory = await prisma.pin.findUnique({
+    where: { id },
+    include: { category: { select: { name: true } } },
+  });
+
   await prisma.pin.delete({ where: { id } });
+
+  logActivity("pin_deleted", session.user.id, {
+    pinId: id,
+    category: pinWithCategory?.category.name,
+    gridCell: pin.gridCell,
+  }, pin.regionId);
+
   return NextResponse.json({ success: true });
 }

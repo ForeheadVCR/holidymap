@@ -90,6 +90,7 @@ export default function MapPageClient() {
           onSearchChange={setSearchQuery}
           activeRegion={activeRegion}
           onRegionChange={handleRegionChange}
+          isAdmin={session?.user?.isAdmin}
         />
         <main className="flex-1">
           <MapContainer
