@@ -8,7 +8,7 @@ export default function Header() {
   const { data: session } = useSession();
 
   return (
-    <header className="relative flex h-16 items-center justify-between bg-gradient-to-r from-dune-dark-900/95 via-dune-dark-950 to-dune-dark-900/95 px-5 shadow-lg shadow-black/30 backdrop-blur-md">
+    <header className="relative z-[1000] flex h-16 items-center justify-between bg-gradient-to-r from-dune-dark-900/95 via-dune-dark-950 to-dune-dark-900/95 px-5 shadow-lg shadow-black/30 backdrop-blur-md">
       <div className="flex items-center gap-3">
         <div className="group cursor-default select-none">
           <h1 className="text-glow font-[family-name:var(--font-cinzel)] text-xl font-bold tracking-wide">
