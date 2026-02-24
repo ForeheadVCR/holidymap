@@ -22,6 +22,7 @@ interface MapContainerProps {
   activeRegion: string;
   onPinPlaced: () => void;
   currentUserId?: string;
+  canEdit?: boolean;
   isAdmin?: boolean;
   onPinDeleted?: () => void;
 }

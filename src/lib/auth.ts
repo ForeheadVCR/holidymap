@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import Discord from "next-auth/providers/discord";
 import { PrismaAdapter } from "@auth/prisma-adapter";
 import { prisma } from "./prisma";
-import { isAdmin } from "./admin";
+import { getUserPermissions } from "./discord-roles";
 
 export const { handlers, signIn, signOut, auth } = NextAuth({
   adapter: PrismaAdapter(prisma),
@@ -24,7 +24,11 @@ export const { handlers, signIn, signOut, auth } = NextAuth({
         });
         const discordId = account?.providerAccountId ?? undefined;
         session.user.discordId = discordId;
-        session.user.isAdmin = isAdmin(discordId);
+
+        // Check Discord guild roles for permissions
+        const permissions = await getUserPermissions(discordId);
+        session.user.canEdit = permissions.canEdit;
+        session.user.isAdmin = permissions.isAdmin;
       }
       return session;
     },

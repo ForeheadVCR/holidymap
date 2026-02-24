@@ -15,6 +15,13 @@ export async function POST(
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  if (!session.user.canEdit) {
+    return NextResponse.json(
+      { error: "Requires Watersealed or Community Admin role" },
+      { status: 403 }
+    );
+  }
+
   const rl = rateLimit(`vote:${session.user.id}`, 60, 60 * 60 * 1000);
   if (!rl.success) {
     return NextResponse.json(
@@ -91,6 +98,13 @@ export async function DELETE(
   const session = await auth();
   if (!session?.user?.id) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
+  }
+
+  if (!session.user.canEdit) {
+    return NextResponse.json(
+      { error: "Requires Watersealed or Community Admin role" },
+      { status: 403 }
+    );
   }
 
   const { id: pinId } = await params;

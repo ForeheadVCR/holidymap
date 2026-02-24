@@ -27,6 +27,7 @@ interface InteractiveMapProps {
   activeRegion: string;
   onPinPlaced: () => void;
   currentUserId?: string;
+  canEdit?: boolean;
   isAdmin?: boolean;
   onPinDeleted?: () => void;
 }
@@ -80,7 +81,7 @@ export default function InteractiveMap({
 
   const handleMapClick = useCallback(
     (latlng: L.LatLng) => {
-      if (!session) return;
+      if (!session?.user?.canEdit) return;
 
       const x = latlng.lng;
       const y = latlng.lat;

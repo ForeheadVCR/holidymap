@@ -109,6 +109,13 @@ export async function POST(request: NextRequest) {
     return NextResponse.json({ error: "Unauthorized" }, { status: 401 });
   }
 
+  if (!session.user.canEdit) {
+    return NextResponse.json(
+      { error: "Requires Watersealed or Community Admin role" },
+      { status: 403 }
+    );
+  }
+
   // Rate limit: 10 pins per hour
   const rl = rateLimit(`pin-create:${session.user.id}`, 10, 60 * 60 * 1000);
   if (!rl.success) {

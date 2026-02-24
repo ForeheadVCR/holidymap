@@ -98,6 +98,7 @@ export default function MapPageClient() {
             activeRegion={activeRegion}
             onPinPlaced={() => mutatePins()}
             currentUserId={session?.user?.id}
+            canEdit={session?.user?.canEdit}
             isAdmin={session?.user?.isAdmin}
             onPinDeleted={() => mutatePins()}
           />
