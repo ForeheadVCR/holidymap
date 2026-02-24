@@ -2,6 +2,7 @@
 
 import { useState, useCallback } from "react";
 import { useSearchParams, useRouter } from "next/navigation";
+import { useSession } from "next-auth/react";
 import Header from "@/components/layout/Header";
 import Sidebar from "@/components/sidebar/Sidebar";
 import MapContainer from "@/components/map/MapContainer";
@@ -19,6 +20,7 @@ function MapPageInner() {
   );
   const [searchQuery, setSearchQuery] = useState("");
 
+  const { data: session } = useSession();
   const { categories } = useCategories();
   const { pins, isLoading, mutate: mutatePins } = usePins(activeRegion, searchQuery);
 
@@ -96,6 +98,9 @@ function MapPageInner() {
             isLoading={isLoading}
             activeRegion={activeRegion}
             onPinPlaced={() => mutatePins()}
+            currentUserId={session?.user?.id}
+            isAdmin={session?.user?.isAdmin}
+            onPinDeleted={() => mutatePins()}
           />
         </main>
       </div>

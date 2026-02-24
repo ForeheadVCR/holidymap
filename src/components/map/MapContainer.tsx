@@ -21,6 +21,9 @@ interface MapContainerProps {
   isLoading: boolean;
   activeRegion: string;
   onPinPlaced: () => void;
+  currentUserId?: string;
+  isAdmin?: boolean;
+  onPinDeleted?: () => void;
 }
 
 export default function MapContainer(props: MapContainerProps) {

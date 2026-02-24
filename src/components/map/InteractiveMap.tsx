@@ -26,6 +26,9 @@ interface InteractiveMapProps {
   isLoading: boolean;
   activeRegion: string;
   onPinPlaced: () => void;
+  currentUserId?: string;
+  isAdmin?: boolean;
+  onPinDeleted?: () => void;
 }
 
 function MapClickHandler({
@@ -64,6 +67,9 @@ export default function InteractiveMap({
   pins,
   activeRegion,
   onPinPlaced,
+  currentUserId,
+  isAdmin,
+  onPinDeleted,
 }: InteractiveMapProps) {
   const { data: session } = useSession();
   const [placementCoords, setPlacementCoords] = useState<{
@@ -116,7 +122,13 @@ export default function InteractiveMap({
         <MapClickHandler onMapClick={handleMapClick} />
 
         {pins.map((pin) => (
-          <PinMarker key={pin.id} pin={pin} />
+          <PinMarker
+            key={pin.id}
+            pin={pin}
+            currentUserId={currentUserId}
+            isAdmin={isAdmin}
+            onDeleted={onPinDeleted}
+          />
         ))}
       </MapContainer>
 

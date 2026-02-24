@@ -47,8 +47,11 @@ export async function DELETE(
     return NextResponse.json({ error: "Pin not found" }, { status: 404 });
   }
 
-  if (pin.userId !== session.user.id) {
-    return NextResponse.json({ error: "Not your pin" }, { status: 403 });
+  const isOwner = pin.userId === session.user.id;
+  const userIsAdmin = session.user.isAdmin === true;
+
+  if (!isOwner && !userIsAdmin) {
+    return NextResponse.json({ error: "Not authorized" }, { status: 403 });
   }
 
   await prisma.pin.delete({ where: { id } });
