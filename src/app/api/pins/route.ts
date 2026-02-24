@@ -97,7 +97,7 @@ export async function GET(request: NextRequest) {
     user: pin.user,
     userVote:
       "votes" in pin && Array.isArray(pin.votes) && pin.votes.length > 0
-        ? (pin.votes[0] as { value: number }).value
+        ? Math.sign((pin.votes[0] as { value: number }).value)
         : null,
   }));
 

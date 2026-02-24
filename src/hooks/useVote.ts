@@ -19,14 +19,25 @@ export function useVote(pinId: string, initialScore: number, initialUserVote: nu
       setUserVote(newValue);
 
       try {
+        let res: Response;
         if (newValue === null) {
-          await fetch(`/api/pins/${pinId}/vote`, { method: "DELETE" });
+          res = await fetch(`/api/pins/${pinId}/vote`, { method: "DELETE" });
         } else {
-          await fetch(`/api/pins/${pinId}/vote`, {
+          res = await fetch(`/api/pins/${pinId}/vote`, {
             method: "POST",
             headers: { "Content-Type": "application/json" },
             body: JSON.stringify({ value: newValue }),
           });
+        }
+
+        if (res.ok) {
+          const data = await res.json();
+          // Use the server's authoritative score (accounts for vote weight)
+          setScore(data.voteScore);
+        } else {
+          // Revert on error
+          setScore(initialScore);
+          setUserVote(initialUserVote ?? null);
         }
       } catch {
         // Revert on error
