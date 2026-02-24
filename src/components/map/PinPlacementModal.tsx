@@ -73,9 +73,10 @@ export default function PinPlacementModal({
   const groups = Object.entries(CATEGORY_GROUPS) as [CategoryGroup, typeof CATEGORY_GROUPS[CategoryGroup]][];
 
   return (
-    <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/60 p-4">
-      <div className="w-full max-w-md rounded-xl border border-dune-dark-700 bg-dune-dark-900 shadow-2xl">
-        <div className="flex items-center justify-between border-b border-dune-dark-700 px-5 py-3">
+    <div className="fixed inset-0 z-[10000] flex items-center justify-center bg-black/60 p-4 backdrop-blur-sm">
+      <div className="animate-modal-in w-full max-w-md overflow-hidden rounded-xl border border-dune-dark-700/80 border-t-2 border-t-dune-spice-500 bg-dune-dark-900 shadow-2xl shadow-black/40">
+        {/* Header */}
+        <div className="relative flex items-center justify-between px-5 py-3.5">
           <div className="flex items-center gap-2">
             <MapPin className="h-5 w-5 text-dune-spice-500" />
             <h2 className="font-semibold text-gray-100">Place Pin</h2>
@@ -86,11 +87,13 @@ export default function PinPlacementModal({
           >
             <X className="h-5 w-5" />
           </button>
+          {/* Divider glow line */}
+          <div className="glow-line absolute bottom-0 left-4 right-4" />
         </div>
 
         <div className="p-5">
-          <div className="mb-4 rounded-lg bg-dune-dark-800 px-3 py-2 font-mono text-sm text-gray-300">
-            Grid Cell: <span className="text-dune-spice-400">{gridCell}</span>
+          <div className="mb-4 rounded-lg bg-dune-dark-800/80 px-3 py-2 font-mono text-sm text-gray-300">
+            Grid Cell: <span className="text-dune-spice-400 font-medium">{gridCell}</span>
           </div>
 
           <div className="mb-4">
@@ -103,7 +106,7 @@ export default function PinPlacementModal({
                 setSelectedCategory(e.target.value);
                 setError("");
               }}
-              className="w-full rounded-lg border border-dune-dark-700 bg-dune-dark-800 px-3 py-2 text-sm text-gray-200 outline-none focus:border-dune-spice-500"
+              className="w-full rounded-lg border border-dune-dark-700/80 bg-dune-dark-800 px-3 py-2.5 text-sm text-gray-200 outline-none transition-all focus:border-dune-spice-500/70 focus:ring-2 focus:ring-dune-spice-500/20"
             >
               <option value="">Select a category...</option>
               {groups.map(([groupKey, groupInfo]) => {
@@ -138,12 +141,12 @@ export default function PinPlacementModal({
               placeholder="Add details about this location..."
               rows={3}
               maxLength={500}
-              className="w-full resize-none rounded-lg border border-dune-dark-700 bg-dune-dark-800 px-3 py-2 text-sm text-gray-200 placeholder-gray-500 outline-none focus:border-dune-spice-500"
+              className="w-full resize-none rounded-lg border border-dune-dark-700/80 bg-dune-dark-800 px-3 py-2.5 text-sm text-gray-200 placeholder-gray-500 outline-none transition-all focus:border-dune-spice-500/70 focus:ring-2 focus:ring-dune-spice-500/20"
             />
           </div>
 
           {error && (
-            <div className="mb-4 rounded-lg bg-red-900/30 px-3 py-2 text-sm text-red-400">
+            <div className="mb-4 rounded-lg border border-red-900/50 bg-red-900/20 px-3 py-2 text-sm text-red-400">
               {error}
             </div>
           )}
@@ -151,14 +154,14 @@ export default function PinPlacementModal({
           <div className="flex gap-3">
             <button
               onClick={onClose}
-              className="flex-1 rounded-lg border border-dune-dark-700 px-4 py-2 text-sm font-medium text-gray-300 transition-colors hover:bg-dune-dark-800"
+              className="flex-1 rounded-lg border border-dune-dark-700/80 px-4 py-2.5 text-sm font-medium text-gray-300 transition-all hover:border-dune-dark-600 hover:bg-dune-dark-800 active:scale-[0.97]"
             >
               Cancel
             </button>
             <button
               onClick={handleSubmit}
               disabled={isSubmitting || !selectedCategory}
-              className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-dune-spice-500 px-4 py-2 text-sm font-medium text-white transition-colors hover:bg-dune-spice-600 disabled:opacity-50"
+              className="flex flex-1 items-center justify-center gap-2 rounded-lg bg-gradient-to-r from-dune-spice-500 to-dune-spice-600 px-4 py-2.5 text-sm font-medium text-white shadow-md shadow-dune-spice-900/30 transition-all hover:from-dune-spice-400 hover:to-dune-spice-500 active:scale-[0.97] disabled:opacity-50 disabled:shadow-none"
             >
               {isSubmitting ? (
                 <Loader2 className="h-4 w-4 animate-spin" />

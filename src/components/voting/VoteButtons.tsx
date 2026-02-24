@@ -29,8 +29,8 @@ export default function VoteButtons({
         onClick={() => vote(1)}
         disabled={!session || isVoting}
         className={cn(
-          "rounded p-0.5 transition-colors hover:bg-dune-dark-800 disabled:opacity-40",
-          userVote === 1 ? "text-green-400" : "text-gray-500"
+          "rounded-md p-1 transition-all hover:bg-dune-dark-800 hover:scale-110 disabled:opacity-40 disabled:hover:scale-100",
+          userVote === 1 ? "text-green-400" : "text-gray-500 hover:text-gray-400"
         )}
         title={session ? "Upvote" : "Sign in to vote"}
       >
@@ -38,11 +38,12 @@ export default function VoteButtons({
       </button>
       <span
         className={cn(
-          "min-w-[24px] text-center font-mono text-sm tabular-nums",
+          "min-w-[24px] text-center font-mono text-sm font-medium tabular-nums",
           score > 0 && "text-green-400",
           score < 0 && "text-red-400",
           score === 0 && "text-gray-500"
         )}
+        style={score > 0 ? { textShadow: "0 0 8px rgba(74, 222, 128, 0.3)" } : score < 0 ? { textShadow: "0 0 8px rgba(248, 113, 113, 0.3)" } : undefined}
       >
         {score}
       </span>
@@ -50,8 +51,8 @@ export default function VoteButtons({
         onClick={() => vote(-1)}
         disabled={!session || isVoting}
         className={cn(
-          "rounded p-0.5 transition-colors hover:bg-dune-dark-800 disabled:opacity-40",
-          userVote === -1 ? "text-red-400" : "text-gray-500"
+          "rounded-md p-1 transition-all hover:bg-dune-dark-800 hover:scale-110 disabled:opacity-40 disabled:hover:scale-100",
+          userVote === -1 ? "text-red-400" : "text-gray-500 hover:text-gray-400"
         )}
         title={session ? "Downvote" : "Sign in to vote"}
       >

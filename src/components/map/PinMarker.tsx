@@ -79,13 +79,14 @@ export default function PinMarker({ pin, currentUserId, isAdmin, onDeleted }: Pi
         </div>
       </Tooltip>
       <Popup>
-        <div className="min-w-[200px]">
+        <div className="min-w-[210px]">
           <div className="mb-2 flex items-center justify-between">
-            <div className="flex items-center gap-2">
+            <div className="flex items-center gap-2.5">
               <img
                 src={getCategoryIconUrl(pin.category.slug)}
                 alt={pin.category.name}
-                className="h-5 w-5"
+                className="h-6 w-6"
+                style={{ filter: "drop-shadow(0 1px 2px rgba(0,0,0,0.4))" }}
               />
               <span className="font-semibold text-gray-100">
                 {pin.category.name}
@@ -95,7 +96,7 @@ export default function PinMarker({ pin, currentUserId, isAdmin, onDeleted }: Pi
               <button
                 onClick={handleDelete}
                 disabled={deleting}
-                className="rounded p-1 text-gray-500 transition-colors hover:bg-red-900/30 hover:text-red-400 disabled:opacity-50"
+                className="rounded-md p-1 text-gray-500 transition-all hover:bg-red-900/30 hover:text-red-400 hover:scale-110 disabled:opacity-50"
                 title="Delete pin"
               >
                 <Trash2 className="h-4 w-4" />
@@ -103,15 +104,16 @@ export default function PinMarker({ pin, currentUserId, isAdmin, onDeleted }: Pi
             )}
           </div>
           {pin.note && (
-            <p className="mb-2 text-sm text-gray-300">{pin.note}</p>
+            <p className="mb-2 text-sm text-gray-300 leading-relaxed">{pin.note}</p>
           )}
           <div className="mb-2 flex items-center gap-2 text-xs text-gray-500">
-            <span>Grid: {pin.gridCell}</span>
+            <span className="font-mono text-dune-spice-400/80">{pin.gridCell}</span>
             <span>&middot;</span>
             <span>
-              By: {pin.user.name || "Unknown"}
+              {pin.user.name || "Unknown"}
             </span>
           </div>
+          <div className="glow-line mb-2" />
           <VoteButtons
             pinId={pin.id}
             initialScore={pin.voteScore}

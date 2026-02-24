@@ -30,9 +30,9 @@ export default function Sidebar({
   const groups = Object.entries(CATEGORY_GROUPS) as [CategoryGroup, typeof CATEGORY_GROUPS[CategoryGroup]][];
 
   return (
-    <aside className="hidden w-72 flex-shrink-0 flex-col border-r border-dune-dark-700 bg-dune-dark-900 md:flex">
+    <aside className="relative hidden w-72 flex-shrink-0 flex-col bg-gradient-to-b from-dune-dark-900 to-dune-dark-950 md:flex">
       {/* Mobile region tabs (shown on md only in sidebar) */}
-      <div className="border-b border-dune-dark-700 p-3 md:hidden">
+      <div className="border-b border-dune-dark-700/50 p-3 md:hidden">
         <RegionTabs activeRegion={activeRegion} onRegionChange={onRegionChange} />
       </div>
 
@@ -59,6 +59,9 @@ export default function Sidebar({
           );
         })}
       </div>
+
+      {/* Right edge glow divider */}
+      <div className="absolute right-0 top-0 bottom-0 w-px bg-gradient-to-b from-transparent via-dune-spice-600/20 to-transparent" />
     </aside>
   );
 }
