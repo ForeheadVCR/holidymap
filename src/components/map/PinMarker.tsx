@@ -116,10 +116,14 @@ export default function PinMarker({ pin, currentUserId, isAdmin, onDeleted }: Pi
           )}
           <div className="mb-2 flex items-center gap-2 text-xs text-gray-500">
             <span className="font-mono text-dune-spice-400/80">{pin.gridCell}</span>
-            <span>&middot;</span>
-            <span>
-              {pin.user.name || "Unknown"}
-            </span>
+            {isAdmin && (
+              <>
+                <span>&middot;</span>
+                <span>
+                  {pin.user.name || "Unknown"}
+                </span>
+              </>
+            )}
           </div>
           <div className="glow-line mb-2" />
           <VoteButtons

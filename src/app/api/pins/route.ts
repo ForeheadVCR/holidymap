@@ -84,6 +84,8 @@ export async function GET(request: NextRequest) {
     orderBy: { createdAt: "desc" },
   });
 
+  const isAdmin = session?.user?.isAdmin === true;
+
   const result = pins.map((pin) => ({
     id: pin.id,
     x: pin.x,
@@ -94,7 +96,9 @@ export async function GET(request: NextRequest) {
     hidden: pin.hidden,
     createdAt: pin.createdAt.toISOString(),
     category: pin.category,
-    user: pin.user,
+    user: isAdmin
+      ? pin.user
+      : { id: pin.user.id, name: null, image: null },
     userVote:
       "votes" in pin && Array.isArray(pin.votes) && pin.votes.length > 0
         ? Math.sign((pin.votes[0] as { value: number }).value)
