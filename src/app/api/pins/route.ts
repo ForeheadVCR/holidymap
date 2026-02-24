@@ -5,6 +5,8 @@ import { rateLimit } from "@/lib/rate-limit";
 import { pixelToGridCell } from "@/lib/map-config";
 import { logActivity } from "@/lib/activity-log";
 
+export const dynamic = "force-dynamic";
+
 export async function GET(request: NextRequest) {
   const { searchParams } = request.nextUrl;
   const regionSlug = searchParams.get("region");
@@ -105,7 +107,9 @@ export async function GET(request: NextRequest) {
         : null,
   }));
 
-  return NextResponse.json(result);
+  return NextResponse.json(result, {
+    headers: { "Cache-Control": "no-store, max-age=0" },
+  });
 }
 
 export async function POST(request: NextRequest) {
