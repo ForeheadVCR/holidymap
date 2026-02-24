@@ -4,6 +4,7 @@ import { auth } from "@/lib/auth";
 import { rateLimit } from "@/lib/rate-limit";
 
 const HIDE_THRESHOLD = -5;
+const MAX_SCORE = 10;
 
 export async function POST(
   request: NextRequest,
@@ -65,7 +66,8 @@ export async function POST(
       _sum: { value: true },
     });
 
-    const newScore = aggregate._sum.value ?? 0;
+    const rawScore = aggregate._sum.value ?? 0;
+    const newScore = Math.min(rawScore, MAX_SCORE);
     const hidden = newScore < HIDE_THRESHOLD;
 
     const updated = await tx.pin.update({
@@ -113,7 +115,8 @@ export async function DELETE(
       _sum: { value: true },
     });
 
-    const newScore = aggregate._sum.value ?? 0;
+    const rawScore = aggregate._sum.value ?? 0;
+    const newScore = Math.min(rawScore, MAX_SCORE);
     const hidden = newScore < HIDE_THRESHOLD;
 
     const updated = await tx.pin.update({

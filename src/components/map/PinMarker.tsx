@@ -15,15 +15,30 @@ interface PinMarkerProps {
   onDeleted?: () => void;
 }
 
+// Scale icon size based on vote score: -4 → 20px, 0 → 32px, +10 → 52px
+// Clamped to range [-4, 10]
+function getIconSize(voteScore: number): number {
+  const clamped = Math.max(-4, Math.min(10, voteScore));
+  // Linear interpolation: -4 → 20, 0 → 32, 10 → 52
+  if (clamped <= 0) {
+    // -4 to 0: 20 to 32 (3px per point)
+    return 20 + ((clamped + 4) / 4) * 12;
+  }
+  // 0 to 10: 32 to 52 (2px per point)
+  return 32 + (clamped / 10) * 20;
+}
+
 function createPinIcon(categorySlug: string, voteScore: number) {
   const opacity = voteScore < 0 ? 0.5 : 1;
+  const size = Math.round(getIconSize(voteScore));
   const iconUrl = getCategoryIconUrl(categorySlug);
+  const anchor = Math.round(size / 2);
   return L.divIcon({
     className: "pin-marker",
-    html: `<div class="pin-icon-img" style="opacity:${opacity}"><img src="${iconUrl}" alt="" width="32" height="32" /></div>`,
-    iconSize: [32, 32],
-    iconAnchor: [16, 16],
-    popupAnchor: [0, -18],
+    html: `<div class="pin-icon-img" style="opacity:${opacity};width:${size}px;height:${size}px"><img src="${iconUrl}" alt="" width="${size}" height="${size}" style="width:${size}px;height:${size}px" /></div>`,
+    iconSize: [size, size],
+    iconAnchor: [anchor, anchor],
+    popupAnchor: [0, -(anchor + 2)],
   });
 }
 
