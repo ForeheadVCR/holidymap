@@ -28,9 +28,17 @@ function getIconSize(voteScore: number): number {
   return 32 + (clamped / 10) * 20;
 }
 
+// Spice fields use different base sizes: large = 1.4x, medium = 1.0x, small = 0.7x
+function getSpiceSizeMultiplier(slug: string): number {
+  if (slug === "spice-large") return 1.4;
+  if (slug === "spice-small") return 0.7;
+  return 1.0;
+}
+
 function createPinIcon(categorySlug: string, voteScore: number) {
   const opacity = voteScore < 0 ? 0.5 : 1;
-  const size = Math.round(getIconSize(voteScore));
+  const multiplier = getSpiceSizeMultiplier(categorySlug);
+  const size = Math.round(getIconSize(voteScore) * multiplier);
   const iconUrl = getCategoryIconUrl(categorySlug);
   const anchor = Math.round(size / 2);
   return L.divIcon({
