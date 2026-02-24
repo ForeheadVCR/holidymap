@@ -18,8 +18,9 @@ export const CATEGORY_ICON_MAP: Record<string, string> = {
   "plant-fiber": "plantfiber.webp",
   "stravidium-mass": "stravidiumore.webp",
   "titanium-ore": "titaniumore.webp",
-  // Other
-  "taxi-service": "taxiservice.webp",
+  // Community
+  "guild-base": "community-pin.svg",
+  "public-depot": "community-pin.svg",
   "community-pin": "community-pin.svg",
 };
 

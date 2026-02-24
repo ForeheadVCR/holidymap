@@ -1,7 +1,7 @@
 export const CATEGORY_GROUPS = {
   poi: { label: "Points of Interest", color: "#f59e0b" },
   resources: { label: "Resources", color: "#3b82f6" },
-  other: { label: "Other", color: "#8b5cf6" },
+  community: { label: "Community", color: "#8b5cf6" },
 } as const;
 
 export type CategoryGroup = keyof typeof CATEGORY_GROUPS;
@@ -22,9 +22,10 @@ export const CATEGORIES = [
   { name: "Plant Fiber", group: "resources", slug: "plant-fiber", color: "#4ade80", sortOrder: 23 },
   { name: "Stravidium", group: "resources", slug: "stravidium-mass", color: "#a78bfa", sortOrder: 24 },
   { name: "Titanium", group: "resources", slug: "titanium-ore", color: "#e2e8f0", sortOrder: 25 },
-  // Other
-  { name: "Taxi Service", group: "other", slug: "taxi-service", color: "#fbbf24", sortOrder: 40 },
-  { name: "Community Pin", group: "other", slug: "community-pin", color: "#8b5cf6", sortOrder: 41 },
+  // Community
+  { name: "Guild Base", group: "community", slug: "guild-base", color: "#a78bfa", sortOrder: 40 },
+  { name: "Public Depot", group: "community", slug: "public-depot", color: "#60a5fa", sortOrder: 41 },
+  { name: "Community Pin", group: "community", slug: "community-pin", color: "#8b5cf6", sortOrder: 42 },
 ] as const;
 
 // Slugs of categories that have been removed and should be cleaned up from the DB
@@ -40,6 +41,7 @@ export const REMOVED_CATEGORY_SLUGS = [
   "iron-ore",
   "jasmium-crystal",
   "scrap-metal",
+  "taxi-service",
 ] as const;
 
 export const REGIONS = [
