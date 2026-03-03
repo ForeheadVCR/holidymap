@@ -1,1 +1,7 @@
-<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24"><polygon points="12,2 22,12 12,22 2,12" fill="white"/></svg>
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24 24" width="24" height="24">
+  <!-- Crashed/tilted ship hull for Fallen Shipwreck -->
+  <path d="M4 18 L8 8 L12 5 L20 10 L22 16 Z" fill="#b45309" stroke="#92400e" stroke-width="1"/>
+  <line x1="12" y1="5" x2="11" y2="2" stroke="#d97706" stroke-width="1.5"/>
+  <line x1="10" y1="2" x2="12" y2="2" stroke="#d97706" stroke-width="1.5"/>
+  <path d="M6 16 Q10 12 18 13" fill="none" stroke="#fbbf24" stroke-width="0.8"/>
+</svg>

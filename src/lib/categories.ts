@@ -10,8 +10,9 @@ export const CATEGORIES = [
   // Points of Interest
   { name: "Cave", group: "poi", slug: "cave", color: "#f59e0b", sortOrder: 0 },
   { name: "Shipwreck", group: "poi", slug: "shipwreck", color: "#d97706", sortOrder: 1 },
-  { name: "Testing Station", group: "poi", slug: "testing-station", color: "#eab308", sortOrder: 2 },
-  { name: "House Representative", group: "poi", slug: "house-rep", color: "#84cc16", sortOrder: 3 },
+  { name: "Fallen Shipwreck", group: "poi", slug: "fallen-shipwreck", color: "#b45309", sortOrder: 2 },
+  { name: "Testing Station", group: "poi", slug: "testing-station", color: "#eab308", sortOrder: 3 },
+  { name: "House Representative", group: "poi", slug: "house-rep", color: "#84cc16", sortOrder: 4 },
   // Resources — Spice fields at top, then ores/materials
   { name: "Spice Field (Large)", group: "resources", slug: "spice-large", color: "#ea580c", sortOrder: 10 },
   { name: "Spice Field (Medium)", group: "resources", slug: "spice-medium", color: "#f97316", sortOrder: 11 },
@@ -30,7 +31,6 @@ export const CATEGORIES = [
 
 // Slugs of categories that have been removed and should be cleaned up from the DB
 export const REMOVED_CATEGORY_SLUGS = [
-  "fallen-shipwreck",
   "loot-container",
   "intel-pickup",
   "basalt-stone",
