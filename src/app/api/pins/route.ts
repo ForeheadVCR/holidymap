@@ -125,13 +125,15 @@ export async function POST(request: NextRequest) {
     );
   }
 
-  // Rate limit: 10 pins per hour
-  const rl = rateLimit(`pin-create:${session.user.id}`, 10, 60 * 60 * 1000);
-  if (!rl.success) {
-    return NextResponse.json(
-      { error: "Rate limit exceeded. Try again later." },
-      { status: 429 }
-    );
+  // Rate limit: 10 pins per hour (admins exempt)
+  if (!session.user.isAdmin) {
+    const rl = rateLimit(`pin-create:${session.user.id}`, 10, 60 * 60 * 1000);
+    if (!rl.success) {
+      return NextResponse.json(
+        { error: "Rate limit exceeded. Try again later." },
+        { status: 429 }
+      );
+    }
   }
 
   const body = await request.json();

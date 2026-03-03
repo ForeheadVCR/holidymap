@@ -23,12 +23,14 @@ export async function POST(
     );
   }
 
-  const rl = rateLimit(`vote:${session.user.id}`, 60, 60 * 60 * 1000);
-  if (!rl.success) {
-    return NextResponse.json(
-      { error: "Rate limit exceeded" },
-      { status: 429 }
-    );
+  if (!session.user.isAdmin) {
+    const rl = rateLimit(`vote:${session.user.id}`, 60, 60 * 60 * 1000);
+    if (!rl.success) {
+      return NextResponse.json(
+        { error: "Rate limit exceeded" },
+        { status: 429 }
+      );
+    }
   }
 
   const { id: pinId } = await params;
