@@ -91,6 +91,7 @@ export default function MapPageClient() {
           activeRegion={activeRegion}
           onRegionChange={handleRegionChange}
           isAdmin={session?.user?.isAdmin}
+          onMapWiped={() => mutatePins()}
         />
         <main className="flex-1">
           <MapContainer
