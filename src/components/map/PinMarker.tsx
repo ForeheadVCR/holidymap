@@ -77,6 +77,9 @@ export default function PinMarker({ pin, currentUserId, isAdmin, onDeleted }: Pi
       <Tooltip direction="top" offset={[0, -18]}>
         <div className="text-center">
           <div className="font-medium">{pin.category.name}</div>
+          {pin.deepDesertInstance && (
+            <div className="mt-0.5 text-xs text-dune-spice-400">Instance {pin.deepDesertInstance}</div>
+          )}
           {pin.note && (
             <div className="mt-0.5 text-xs text-gray-400">{pin.note}</div>
           )}
@@ -111,6 +114,11 @@ export default function PinMarker({ pin, currentUserId, isAdmin, onDeleted }: Pi
               </button>
             )}
           </div>
+          {pin.deepDesertInstance && (
+            <div className="mb-2 inline-block rounded bg-dune-spice-500/15 px-2 py-0.5 text-xs font-medium text-dune-spice-400 border border-dune-spice-500/30">
+              Instance {pin.deepDesertInstance}
+            </div>
+          )}
           {pin.note && (
             <p className="mb-2 text-sm text-gray-300 leading-relaxed">{pin.note}</p>
           )}

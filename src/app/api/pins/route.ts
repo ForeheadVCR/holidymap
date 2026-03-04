@@ -94,6 +94,7 @@ export async function GET(request: NextRequest) {
     y: pin.y,
     gridCell: pin.gridCell,
     note: pin.note,
+    deepDesertInstance: pin.deepDesertInstance,
     voteScore: pin.voteScore,
     hidden: pin.hidden,
     createdAt: pin.createdAt.toISOString(),
@@ -137,7 +138,7 @@ export async function POST(request: NextRequest) {
   }
 
   const body = await request.json();
-  const { x, y, categoryId, region: regionSlug, note } = body;
+  const { x, y, categoryId, region: regionSlug, note, deepDesertInstance } = body;
 
   if (typeof x !== "number" || typeof y !== "number" || !categoryId || !regionSlug) {
     return NextResponse.json(
@@ -168,6 +169,17 @@ export async function POST(request: NextRequest) {
     );
   }
 
+  // Validate deepDesertInstance if provided
+  const COMMUNITY_SLUGS = ["guild-base", "public-depot", "community-pin"];
+  const isCommunityPin = COMMUNITY_SLUGS.includes(category.slug);
+  const validInstance = deepDesertInstance != null ? [1, 2, 3].includes(deepDesertInstance) : true;
+  if (!validInstance) {
+    return NextResponse.json(
+      { error: "Deep Desert Instance must be 1, 2, or 3" },
+      { status: 400 }
+    );
+  }
+
   const gridCell = pixelToGridCell(x, y);
 
   const pin = await prisma.pin.create({
@@ -176,6 +188,7 @@ export async function POST(request: NextRequest) {
       y,
       gridCell,
       note: note?.trim() || null,
+      deepDesertInstance: isCommunityPin && deepDesertInstance ? deepDesertInstance : null,
       categoryId: category.id,
       regionId: region.id,
       userId: session.user.id,

@@ -4,6 +4,7 @@ export interface PinData {
   y: number;
   gridCell: string;
   note: string | null;
+  deepDesertInstance: number | null;
   voteScore: number;
   hidden: boolean;
   createdAt: string;

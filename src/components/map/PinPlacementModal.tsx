@@ -25,8 +25,13 @@ export default function PinPlacementModal({
   const { categories } = useCategories();
   const [selectedCategory, setSelectedCategory] = useState("");
   const [note, setNote] = useState("");
+  const [deepDesertInstance, setDeepDesertInstance] = useState<number | "">("");
   const [isSubmitting, setIsSubmitting] = useState(false);
   const [error, setError] = useState("");
+
+  const COMMUNITY_SLUGS = ["guild-base", "public-depot", "community-pin"];
+  const selectedCatSlug = categories?.find((c) => c.id === selectedCategory)?.slug;
+  const isCommunityPin = selectedCatSlug ? COMMUNITY_SLUGS.includes(selectedCatSlug) : false;
 
   const handleSubmit = async () => {
     if (!selectedCategory) {
@@ -53,6 +58,7 @@ export default function PinPlacementModal({
           categoryId: selectedCategory,
           region: activeRegion,
           note: note.trim() || null,
+          ...(isCommunityPin && deepDesertInstance ? { deepDesertInstance } : {}),
         }),
       });
 
@@ -144,6 +150,30 @@ export default function PinPlacementModal({
               className="w-full resize-none rounded-lg border border-dune-dark-700/80 bg-dune-dark-800 px-3 py-2.5 text-sm text-gray-200 placeholder-gray-500 outline-none transition-all focus:border-dune-spice-500/70 focus:ring-2 focus:ring-dune-spice-500/20"
             />
           </div>
+
+          {isCommunityPin && (
+            <div className="mb-4">
+              <label className="mb-2 block text-sm font-medium text-gray-300">
+                Deep Desert Instance
+              </label>
+              <div className="flex gap-2">
+                {[1, 2, 3].map((num) => (
+                  <button
+                    key={num}
+                    type="button"
+                    onClick={() => setDeepDesertInstance(deepDesertInstance === num ? "" : num)}
+                    className={`flex-1 rounded-lg border px-3 py-2.5 text-sm font-medium transition-all ${
+                      deepDesertInstance === num
+                        ? "border-dune-spice-500 bg-dune-spice-500/20 text-dune-spice-400"
+                        : "border-dune-dark-700/80 bg-dune-dark-800 text-gray-400 hover:border-dune-dark-600 hover:text-gray-300"
+                    }`}
+                  >
+                    Instance {num}
+                  </button>
+                ))}
+              </div>
+            </div>
+          )}
 
           {error && (
             <div className="mb-4 rounded-lg border border-red-900/50 bg-red-900/20 px-3 py-2 text-sm text-red-400">

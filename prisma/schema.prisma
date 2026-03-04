@@ -84,22 +84,23 @@ model Region {
 }
 
 model Pin {
-  id         String   @id @default(cuid())
-  x          Float
-  y          Float
-  gridCell   String
-  note       String?  @db.Text
-  categoryId String
-  category   Category @relation(fields: [categoryId], references: [id])
-  regionId   String
-  region     Region   @relation(fields: [regionId], references: [id])
-  userId     String
-  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
-  votes      Vote[]
-  voteScore  Int      @default(0)
-  hidden     Boolean  @default(false)
-  createdAt  DateTime @default(now())
-  updatedAt  DateTime @updatedAt
+  id                  String   @id @default(cuid())
+  x                   Float
+  y                   Float
+  gridCell            String
+  note                String?  @db.Text
+  deepDesertInstance  Int?
+  categoryId          String
+  category            Category @relation(fields: [categoryId], references: [id])
+  regionId            String
+  region              Region   @relation(fields: [regionId], references: [id])
+  userId              String
+  user                User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  votes               Vote[]
+  voteScore           Int      @default(0)
+  hidden              Boolean  @default(false)
+  createdAt           DateTime @default(now())
+  updatedAt           DateTime @updatedAt
 
   @@index([regionId])
   @@index([categoryId])
